@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- FullCalendar CSS -->
+    <link href="path/to/fullcalendar.min.css" rel="stylesheet" />
+
+    <!-- FullCalendar JavaScript -->
+    <script src="path/to/fullcalendar.min.js"></script>
+    <title>Task List</title>
+</head>
+<body>
+<h1>Task List</h1>
+
+<div>
+    <label for="priorityFilter">Filter by Priority:</label>
+    <select id="priorityFilter">
+        <option value="LOW">Low</option>
+        <option value="MEDIUM">Medium</option>
+        <option value="HIGH">High</option>
+    </select>
+
+    <!-- Add more filter elements for category, status, etc. -->
+</div>
+
+<div id="calendar"></div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Priority</th>
+        <th>Due Date</th>
+        <th>Category</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${tasks}">
+        <td th:text="${task.id}"></td>
+        <td th:text="${task.title}"></td>
+        <td th:text="${task.description}"></td>
+        <td th:text="${task.priority}"></td>
+        <td th:text="${task.dueDate}"></td>
+        <td th:text="${task.category}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            // Configure FullCalendar options here
+            plugins: [ 'dayGrid' ], // Choose the desired plugins
+            // Add other configurations (e.g., header, defaultView, etc.)
+
+            events: [
+                // Define events/tasks here or fetch dynamically via AJAX
+                {
+                    title: 'Task 1',
+                    start: '2023-12-25' // Example start date
+                    // Add other properties like end date, description, etc.
+                },
+                // Add more events/tasks as needed
+            ]
+        });
+
+        calendar.render();
+
+        // Add filtering functionality
+        document.getElementById('priorityFilter').addEventListener('change', function() {
+            // Retrieve the selected priority value
+            var selectedPriority = document.getElementById('priorityFilter').value;
+
+            document.getElementById('priorityFilter').addEventListener('change', function() {
+                // Retrieve the selected priority value
+                var selectedPriority = document.getElementById('priorityFilter').value;
+
+                // Make an AJAX request to the backend with the selected priority
+                fetch('/tasks/by-priority?priority=' + selectedPriority)
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(tasks) {
+                        // Handle the response with filtered tasks
+                        // Update the displayed tasks in the HTML table or FullCalendar based on the filtered results
+
+                        // Example for updating an HTML table with the filtered tasks:
+                        var tasksTableBody = document.querySelector('tbody');
+                        tasksTableBody.innerHTML = ''; // Clear existing table rows
+
+                        tasks.forEach(function(task) {
+                            var row = '<tr>' +
+                                '<td>' + task.id + '</td>' +
+                                '<td>' + task.title + '</td>' +
+                                '<td>' + task.description + '</td>' +
+                                '<td>' + task.priority + '</td>' +
+                                '<td>' + task.dueDate + '</td>' +
+                                '<td>' + task.category + '</td>' +
+                                '</tr>';
+
+                            tasksTableBody.insertAdjacentHTML('beforeend', row);
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('Error fetching tasks:', error);
+                    });
+            });
+
+        });
+
+        // Implement similar logic for other filters if needed
+    });
+</script>
+</body>
+</html>
