@@ -43,7 +43,8 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    @OneToMany(mappedBy = "user") // Refers to the 'user' field in the Task entity
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Task> tasks;
+
 }
 

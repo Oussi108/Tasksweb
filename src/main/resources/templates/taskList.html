@@ -34,6 +34,7 @@
         <th>Priority</th>
         <th>Due Date</th>
         <th>Category</th>
+        <th>Actions</th> <!-- New column for actions -->
     </tr>
     </thead>
     <tbody>
@@ -44,6 +45,12 @@
         <td th:text="${task.priority}"></td>
         <td th:text="${task.dueDate}"></td>
         <td th:text="${task.category}"></td>
+        <td>
+            <!-- Links for each task -->
+            <a th:href="@{'/tasks/details/' + ${task.id}}">Details</a>
+            <a th:href="@{'/tasks/update/' + ${task.id}}">Update</a>
+            <a th:href="@{'/tasks/delete/' + ${task.id} + '/confirm'}">Delete</a>
+        </td>
     </tr>
     </tbody>
 </table>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Details</title>
+</head>
+<body>
+<h1>Task Details</h1>
+<p>ID: <span th:text="${task.id}"></span></p>
+<p>Title: <span th:text="${task.title}"></span></p>
+<p>Description: <span th:text="${task.description}"></span></p>
+<p>Status: <span th:text="${task.status}"></span></p>
+<p>Priority: <span th:text="${task.priority}"></span></p>
+<p>Due Date: <span th:text="${task.dueDate}"></span></p>
+<p>Category: <span th:text="${task.category}"></span></p>
+
+<!-- Display user details if there's a user associated with the task -->
+<div th:if="${task.user != null}">
+    <h2>User Details</h2>
+    <p>User ID: <span th:text="${task.user.id}"></span></p>
+    <p>First Name: <span th:text="${task.user.firstName}"></span></p>
+    <p>Last Name: <span th:text="${task.user.lastName}"></span></p>
+    <p>Email: <span th:text="${task.user.email}"></span></p>
+
+</div>
+</body>
+</html>
